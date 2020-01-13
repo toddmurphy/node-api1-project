@@ -26,10 +26,65 @@ server.get('/api/users', (req, res) => {
 });
 
 //POST -> create a new user
+server.post('/api/users', (req, res) => {
+  const addUser = req.body;
+
+  Users.insert(addUser)
+    .then(user => {
+      console.log('Success, a new user created', user);
+      res.status(201);
+      res.json(user);
+    })
+    .catch(error => {
+      console.log('Sorry, no user added', error);
+      res.status(500);
+      res.json({ errorMessage: 'Sorry, no user created on the server' });
+    });
+});
 
 //DELETE --> delete a user by ID
+server.delete('/api/users/:id', (req, res) => {
+  const userID = req.params.id;
+  let deletedUser = {};
+
+  Users.findById(userID)
+    .then(user => {
+      deletedUser = { ...user };
+    })
+    .catch(error => {
+      console.log('No user with that ID deleted', error);
+      res.status(500);
+      res.json({ errorMessage: 'Successfully deleted user' });
+    });
+
+  Users.remove(userID)
+    .then(user => {
+      res.status(200);
+      res.json(deletedUser);
+    })
+    .catch(error => {
+      console.log('Sorry, no user removed', error);
+      res.status(500);
+      res.json({ errorMessage: 'Sorry, no user removed from the server' });
+    });
+});
 
 //GET --> single user by ID
+server.get('/api/users/:id', (req, res) => {
+  const userID = req.params.id;
+
+  Users.findById(userID)
+    .then(user => {
+      console.log('Successfully found a user with that ID', user);
+      res.status(200);
+      res.json(user);
+    })
+    .catch(error => {
+      console.log('No user with that ID found', error);
+      res.status(200);
+      res.json({ errorMessage: 'Sorry, now user found with that ID on the server', error });
+    });
+});
 
 //PUT --> update a user by ID
 

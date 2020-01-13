@@ -59,12 +59,12 @@ server.delete('/api/users/:id', (req, res) => {
 
   Users.remove(userID)
     .then(user => {
-      res.status(200);
+      res.status(404);
       res.json(deletedUser);
     })
     .catch(error => {
       console.log('Sorry, no user removed', error);
-      res.status(500);
+      res.status(400);
       res.json({ errorMessage: 'Sorry, no user removed from the server' });
     });
 });
@@ -81,12 +81,28 @@ server.get('/api/users/:id', (req, res) => {
     })
     .catch(error => {
       console.log('No user with that ID found', error);
-      res.status(200);
-      res.json({ errorMessage: 'Sorry, now user found with that ID on the server', error });
+      res.status(404);
+      res.json({ errorMessage: 'Sorry, now user found with that ID on the server' });
     });
 });
 
 //PUT --> update a user by ID
+server.put('/api/users/:id', (req, res) => {
+  const userID = req.params.id;
+  let newUser = req.body;
+
+  Users.update(userID, newUser)
+    .then(user => {
+      console.log('Successfully updated user', user);
+      res.status(200);
+      res.json(newUser);
+    })
+    .catch(error => {
+      console.log('Sorry, user not updated', error);
+      res.status(400);
+      res.json({ errorMessage: 'Sorry, user not updated on the server' });
+    });
+});
 
 server.listen(port, () => {
   console.log(`server running on port: ${port}`);

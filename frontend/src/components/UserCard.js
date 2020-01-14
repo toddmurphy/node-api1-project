@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const UserCard = props => {
+  const [editting, setEditting] = useState(false);
+
   console.log(props);
   const { name, bio, id } = props.user;
 
@@ -21,14 +23,16 @@ const UserCard = props => {
       });
   };
 
-  //handleEdit
+  const editForm = () => {
+    props.history.push(`/EditUser/${id}`);
+  };
 
   return (
     <div>
       <p>{id}</p>
       <p>{name}</p>
       <p>{bio}</p>
-      <button>Edit</button>
+      <button onClick={() => editForm()}>Edit</button>
       <button onClick={handleDelete}>Delete</button>
     </div>
   );

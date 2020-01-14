@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import UserCard from './UserCard';
 import axios from 'axios';
 
-const UserList = () => {
+const UserList = props => {
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const UserList = () => {
   return (
     <div>
       {userData.map((user, index) => {
-        return <UserCard key={index} user={user} userData={userData} setUserData={setUserData} />;
+        return <UserCard key={index} user={user} userData={userData} setUserData={setUserData} history={props.history} />;
       })}
     </div>
   );

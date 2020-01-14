@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import EditUser from './EditUser';
+import UserCard from './UserCard';
 
 const CreateUser = () => {
   const [addUser, setAddUser] = useState({
@@ -37,6 +39,8 @@ const CreateUser = () => {
   return (
     <div>
       <form onSubmit={handleOnSubmitAddUser}>
+        {/* create user */}
+        <h3>Add a User</h3>
         <input type="text" name="name" placeholder="Name" value={addUser.name} onChange={handleInputChanges} />
         <input type="text" name="bio" placeholder="Bio" value={addUser.bio} onChange={handleInputChanges} />
         <button type="submit">Add user</button>

@@ -60,8 +60,8 @@ server.delete('/api/users/:id', (req, res) => {
     });
 
   Users.remove(userID)
-    .then(user => {
-      res.status(404);
+    .then(deletedUser => {
+      res.status(200);
       res.json(deletedUser);
     })
     .catch(error => {

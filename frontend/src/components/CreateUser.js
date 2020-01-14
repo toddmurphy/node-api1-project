@@ -1,34 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const CreateUser = () => {
+  const [addUser, setAddUser] = useState({
+    name: '',
+    bio: ''
+  });
 
+  //handleInputChanges
+  const handleInputChanges = event => {
+    setAddUser({
+      ...addUser,
+      [event.target.name]: event.target.value
+    });
+  };
 
-    //handleInputChanges
+  //handleOnSubmitAddUser
+  const handleOnSubmitAddUser = event => {
+    event.preventDefault();
 
+    axios
+      .post('http://localhost:8000/api/users', addUser)
+      .then(res => {
+        console.log(res);
 
-    //handleOnSubmitAddUser
+        setAddUser({
+          name: '',
+          bio: ''
+        });
+      })
+      .catch(error => {
+        console.log('Sorry, no user added', error);
+      });
+  };
 
-    return ( 
-        <div>
-            <form>
-                <input 
-                    type='text'
-                    name='name'
-                    placeholder='Name'
-                    //value={}
-                    //onChange={}
-                />
-                <input 
-                    type='text'
-                    name='bio'
-                    placeholder='Bio'
-                    //value={}
-                    //onChange={}
-                />
-                <button>Add user</button>
-            </form>
-        </div>
-     );
-}
- 
+  return (
+    <div>
+      <form onSubmit={handleOnSubmitAddUser}>
+        <input type="text" name="name" placeholder="Name" value={addUser.name} onChange={handleInputChanges} />
+        <input type="text" name="bio" placeholder="Bio" value={addUser.bio} onChange={handleInputChanges} />
+        <button type="submit">Add user</button>
+      </form>
+    </div>
+  );
+};
+
 export default CreateUser;
